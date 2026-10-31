@@ -6,6 +6,9 @@ const state = { method: 'caesar', mode: 'encrypt', shift: 3, keyword: 'LEMON', p
 const input = $('input-text');
 const output = $('output-text');
 let toastTimer;
+let autoTimer;
+let pendingRun = false;
+let composing = false;
 
 function toast(message) {
   $('toast').textContent = message;
@@ -23,12 +26,17 @@ function updateCounts() {
   $('swap-button').disabled = !output.value || state.busy;
 }
 function invalidate() {
+  clearTimeout(autoTimer);
+  pendingRun = false;
   state.revision++;
   output.value = '';
   $('error-message').hidden = true;
   $('output-tag').textContent = 'READY WHEN YOU ARE';
   $('output-tag').classList.remove('done');
   updateCounts();
+  if (input.value && !composing) {
+    autoTimer = setTimeout(() => run(true), state.method === 'aes' ? 300 : 0);
+  }
 }
 function operation() { return state.method === 'base64' ? (state.mode === 'encrypt' ? 'Encode' : 'Decode') : (state.mode === 'encrypt' ? 'Encrypt' : 'Decrypt'); }
 function updateMode() {
@@ -47,7 +55,7 @@ function updateMode() {
   renderVisual();
 }
 function setMode(mode) {
-  if (state.busy || state.mode === mode) return;
+  if (state.mode === mode) return;
   state.mode = mode;
   invalidate();
   updateMode();
@@ -111,7 +119,6 @@ function renderVisual() {
   }
 }
 function setMethod(method) {
-  if (state.busy) return;
   if (state.method !== method) {
     state.method = method;
     state.mode = 'encrypt';
@@ -134,16 +141,18 @@ function setMethod(method) {
   renderParameters();
   updateMode();
 }
-async function run() {
-  if (state.busy) return;
+async function run(automatic = false) {
+  clearTimeout(autoTimer);
+  if (state.busy) { pendingRun = true; return; }
   if (!input.value) {
+    if (automatic) return;
     $('error-message').textContent = 'Add a message first. Even a little mystery needs a few words.';
     $('error-message').hidden = false;
     input.focus();
     return;
   }
+  if (automatic && ((state.method === 'aes' && !state.password) || (state.method === 'vigenere' && !state.keyword))) return;
   const revision = state.revision;
-  const originalLabel = $('transform-button').innerHTML;
   state.busy = true;
   $('transform-button').disabled = true;
   $('transform-button').innerHTML = icon('rotate', 'small') + '<span>Working on it…</span>';
@@ -167,8 +176,12 @@ async function run() {
   } finally {
     state.busy = false;
     $('transform-button').disabled = false;
-    $('transform-button').innerHTML = originalLabel;
+    updateMode();
     updateCounts();
+    if (pendingRun) {
+      pendingRun = false;
+      run(true);
+    }
   }
 }
 
@@ -189,15 +202,16 @@ for (const [id, data] of Object.entries(methods)) {
 $('encrypt-tab').onclick = () => { setMode('encrypt'); if (state.method === 'caesar') renderParameters(); };
 $('decrypt-tab').onclick = () => { setMode('decrypt'); if (state.method === 'caesar') renderParameters(); };
 input.addEventListener('input', invalidate);
-$('transform-button').onclick = run;
+input.addEventListener('compositionstart', () => { composing = true; clearTimeout(autoTimer); pendingRun = false; });
+input.addEventListener('compositionend', () => { composing = false; invalidate(); });
+$('transform-button').onclick = () => run();
 $('clear-button').onclick = () => { input.value = ''; invalidate(); input.focus(); };
 $('example-button').onclick = async () => {
-  if (state.busy) return;
   state.mode = 'encrypt';
   input.value = methods[state.method].example;
   invalidate(); updateMode();
   if (state.method === 'caesar') renderParameters();
-  if (state.method === 'aes' && !state.password) { $('password-input').focus(); toast('Enter your own password to try AES encryption.'); return; }
+  if (state.method === 'aes' && !state.password) { clearTimeout(autoTimer); $('password-input').focus(); toast('Enter your own password to try AES encryption.'); return; }
   await run();
 };
 $('swap-button').onclick = () => {

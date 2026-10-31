@@ -52,7 +52,9 @@ Open http://localhost:5173. Use `PORT=8080 npm run dev` to choose a different po
 
 Classical ciphers are intended for learning and puzzles. Base64 is encoding rather than encryption. Use AES for password-protected messages; decrypting requires the entire result and the same password. AES requires HTTPS or localhost.
 
-The interface includes copy, download, input/output swapping, sample messages, alphabet previews, a method guide, and Ctrl/⌘ + Enter shortcuts. Refreshing clears your text and passwords. Google Fonts is used for typography, with local fallback fonts.
+Results update automatically when you type, paste, or change the method, mode, shift, keyword, or password. AES waits until you pause typing for 300 ms, and results from older inputs are discarded. Clearing the input clears the result. The transform button and Ctrl/⌘ + Enter still work for an immediate update.
+
+The interface also includes copy, download, input/output swapping, sample messages, alphabet previews, and a method guide. Refreshing clears your text and passwords. Google Fonts is used for typography, with local fallback fonts.
 
 ## Verify
 
