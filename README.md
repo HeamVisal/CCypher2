@@ -34,3 +34,5 @@ npm test
 ```
 
 Static hosting needs only the contents of `web/dist`. The development server is bound to localhost.
+
+@Built by Codex-ChatGPT6.1Ultra
