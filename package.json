@@ -1,0 +1,9 @@
+{
+  "name": "ccypher2",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix web run dev",
+    "start": "npm --prefix web start",
+    "test": "npm --prefix web test"
+  }
+}

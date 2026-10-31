@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f8f5" />
+  <meta name="description" content="A thoughtful little workspace for encrypting, decrypting, and exploring text. Try Caesar, Vigenère, Atbash, ROT13, Base64, and AES-256-GCM, entirely in your browser." />
+  <title>Cipherlab — A little privacy. A lot of possibility.</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M20 10a8 8 0 1 0-1 7M20 4v6h-6"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="8" r="5"/><path d="m11.5 11.5 9 9M16 16l3-3m-6 6 3-3"/></symbol>
+    <symbol id="i-arrows" viewBox="0 0 24 24"><path d="M4 7h16m-4-4 4 4-4 4M20 17H4m4-4-4 4 4 4"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m7 7-5 5 5 5m10-10 5 5-5 5m-3-14-4 18"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6z"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 7-2m-3 9v3"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5C8 2 3 3 3 3v16s5-1 9 2c4-3 9-2 9-2V3s-5-1-9 2zm0 0v16"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V3H3v13h5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  </svg>
+
+  <aside class="sidebar">
+    <a class="brand" href="./" aria-label="Cipherlab home"><img src="./favicon.svg" alt="" width="35" height="35"/><span>cipherlab<span class="brand-dot">.</span></span></a>
+    <div class="sidebar-intro">A little privacy.<br>A lot of possibility.</div>
+    <div class="sidebar-section-label">YOUR WORKSPACE</div>
+    <a class="workspace-link" href="#workspace"><svg class="icon"><use href="#i-grid"/></svg>Text playground<span class="active-dot"></span></a>
+    <div class="sidebar-section-label methods-label">EXPLORE METHODS <span>06</span></div>
+    <nav id="method-nav" class="method-nav" aria-label="Encryption methods"></nav>
+    <button class="guide-link" id="guide-button"><svg class="icon"><use href="#i-book"/></svg>A quick field guide<svg class="icon small"><use href="#i-arrow"/></svg></button>
+    <div class="sidebar-bottom"><div class="privacy-icon"><svg class="icon"><use href="#i-shield"/></svg></div><strong>Your words stay yours.</strong><p>All processing happens in your browser. Your text never leaves this page.</p><div class="version"><span class="live-dot"></span> LOCAL BY DESIGN <span>v1.0</span></div></div>
+  </aside>
+
+  <div class="page">
+    <header class="topbar"><div><span>Workspace</span><span class="crumb-slash">/</span><strong>Text playground</strong></div><button class="topbar-help" id="about-button"><svg class="icon small"><use href="#i-book"/></svg>How it works</button></header>
+    <main>
+      <section class="intro"><div><div class="eyebrow"><span class="live-dot"></span> THE ART OF KEEPING SECRETS</div><h1>Ordinary text.<br><span>Extraordinary possibilities.</span></h1><p>Encrypt a thought. Decode a mystery. Make words your own.</p></div><div class="intro-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="art-letter letter-a">A</span><div class="art-lock"><svg><use href="#i-lock"/></svg></div><span class="art-letter letter-d">D</span><span class="art-plus">+</span><span class="art-dot"></span><span class="art-caption">A NEW WAY TO SAY IT</span></div></section>
+
+      <section class="workbench" id="workspace" aria-label="Cipher workspace">
+        <div class="workbench-top"><div class="mode-tabs" role="group" aria-label="Operation"><button id="encrypt-tab" class="mode-tab active" aria-pressed="true"><svg class="icon small"><use href="#i-lock"/></svg>Encrypt</button><button id="decrypt-tab" class="mode-tab" aria-pressed="false"><svg class="icon small"><use href="#i-unlock"/></svg>Decrypt</button></div><div class="browser-badge"><span class="live-dot"></span>Runs in your browser</div></div>
+        <div class="method-heading"><div class="method-heading-left"><div class="method-symbol" id="method-symbol"><svg class="icon"><use href="#i-rotate"/></svg></div><div><div class="method-title-line"><h2 id="method-title">Caesar cipher</h2><span class="method-badge" id="method-type">Classical cipher</span></div><p id="method-description">One small shift. A whole new message.</p></div></div><button class="text-button" id="method-info">About this method<svg class="icon small"><use href="#i-info"/></svg></button></div>
+        <div class="parameters" id="parameters"></div>
+        <div class="editors"><div class="editor input-editor"><div class="editor-toolbar"><label id="input-label" for="input-text">Your message</label><button class="text-button" id="example-button"><svg class="icon small"><use href="#i-spark"/></svg>Try an example</button></div><textarea id="input-text" spellcheck="false" placeholder="Every secret starts with a few words…" aria-describedby="input-count"></textarea><div class="editor-footer"><span id="input-count">0 characters</span><button class="icon-button" id="clear-button" aria-label="Clear message" title="Clear message"><svg class="icon small"><use href="#i-trash"/></svg></button></div></div><button class="swap-button" id="swap-button" aria-label="Use result as input and reverse operation" title="Swap input and output"><svg class="icon"><use href="#i-arrows"/></svg></button><div class="editor output-editor"><div class="editor-toolbar"><label id="output-label" for="output-text">Encrypted result</label><span class="output-tag" id="output-tag">READY WHEN YOU ARE</span></div><textarea id="output-text" readonly spellcheck="false" placeholder="A little mystery will appear here…" aria-describedby="output-count"></textarea><div class="editor-footer"><span id="output-count">0 characters</span><div class="output-actions"><button class="icon-button" id="download-button" aria-label="Download result" title="Download result" disabled><svg class="icon small"><use href="#i-download"/></svg></button><button class="copy-button" id="copy-button" disabled><svg class="icon small"><use href="#i-copy"/></svg>Copy result</button></div></div></div></div>
+        <div class="error-message" id="error-message" role="alert" hidden></div>
+        <div class="workbench-bottom"><div class="preserve-note"><svg class="icon small"><use href="#i-check"/></svg><span id="preserve-note">Letter case & punctuation preserved</span></div><div class="transform-group"><span class="shortcut"><kbd>Ctrl</kbd> + <kbd>↵</kbd></span><button id="transform-button" class="primary-button"><svg class="icon small"><use href="#i-lock"/></svg><span>Encrypt text</span><svg class="icon small"><use href="#i-arrow"/></svg></button></div></div>
+      </section>
+
+      <section class="explanation" id="explanation"><div class="explanation-copy"><div class="eyebrow" id="explanation-eyebrow">THE ORIGINAL LETTER SHIFT</div><h2 id="explanation-title">A classic. With a twist.</h2><p id="explanation-about"></p><p id="method-detail"></p><button class="text-button" id="learn-button">Get to know the methods<svg class="icon small"><use href="#i-arrow"/></svg></button></div><div class="explanation-visual" id="explanation-visual"></div></section>
+      <footer class="page-footer"><span>Made for curious minds & secret keepers.</span><span><svg class="icon small"><use href="#i-lock"/></svg>No accounts. No uploads. Just you.</span></footer>
+    </main>
+  </div>
+
+  <dialog id="guide-dialog"><div class="dialog-heading"><div class="eyebrow">A QUICK FIELD GUIDE</div><button class="icon-button" id="close-dialog" aria-label="Close field guide"><svg class="icon"><use href="#i-close"/></svg></button></div><h2>A method for every mystery.</h2><p class="dialog-intro">Choose a method, enter your message, and hit transform. To reverse it, switch to decrypt and use the same settings.</p><div id="guide-methods"></div><div class="guide-note"><svg class="icon"><use href="#i-shield"/></svg><p>Classical ciphers are for learning and puzzles. Base64 is an encoding. For password-protected messages, choose AES-256-GCM and keep the password somewhere safe.</p></div><p class="dialog-local">Your text and passwords stay in memory in this browser tab. Refreshing the page clears them.</p></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
